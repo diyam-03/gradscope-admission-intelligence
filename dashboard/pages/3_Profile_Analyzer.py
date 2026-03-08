@@ -265,7 +265,7 @@ if analyze or st.session_state.get("analyzed"):
         fig2.update_layout(paper_bgcolor="rgba(255,255,255,0.80)",
                            plot_bgcolor="rgba(247,248,252,0.90)",
                            font_family="Outfit", font_color="#3d4f7a",
-                           margin=dict(l=0, r=160, t=10, b=0),
+                           margin=dict(l=0, r=160, t=40, b=0),
                            height=320,
                            xaxis=dict(showgrid=True, gridcolor="rgba(13,27,62,0.06)"),
                            yaxis=dict(showgrid=True, gridcolor="rgba(13,27,62,0.06)"),
