@@ -75,29 +75,25 @@ def topnav(active: str = ""):
       font-family:'Outfit',sans-serif;font-size:0.74rem;
       color:rgba(255,255,255,0.48);white-space:nowrap;
     }}
+    .gs-nav-logout {{
+      font-family:'Outfit',sans-serif;font-size:0.78rem;font-weight:600;
+      color:rgba(200,0,110,0.85);white-space:nowrap;text-decoration:none;
+      padding:0.3rem 0.7rem;border-radius:7px;
+      border:1.5px solid rgba(200,0,110,0.35);
+      margin-left:0.4rem;
+      transition:background 0.15s,color 0.15s;
+    }}
+    .gs-nav-logout:hover {{
+      background:rgba(200,0,110,0.15);color:#c8006e;
+    }}
     </style>
     <nav class="gs-nav">
       {links}
       <div class="gs-nav-spacer"></div>
       <div class="gs-nav-user">
-        <div class="gs-nav-avatar" id="gs-avatar-btn" onclick="document.getElementById('gs-dropdown').style.display=document.getElementById('gs-dropdown').style.display==='block'?'none':'block'" style="cursor:pointer;">{user_initial}</div>
+        <div class="gs-nav-avatar">{user_initial}</div>
         <div class="gs-nav-email">{user_email}</div>
-        <div id="gs-dropdown" style="display:none;position:absolute;top:52px;right:16px;
-          background:#fff;border-radius:12px;padding:0.75rem;min-width:180px;
-          box-shadow:0 8px 32px rgba(13,27,62,0.18);border:1px solid rgba(13,27,62,0.08);
-          z-index:9999;">
-          <div style="font-family:'Outfit',sans-serif;font-size:0.75rem;color:#7b8cb0;
-                      padding:0.2rem 0.5rem 0.5rem;border-bottom:1px solid rgba(13,27,62,0.07);
-                      margin-bottom:0.4rem;font-weight:600;">{user_email}</div>
-          <a href="/?logout=1" target="_self"
-            style="display:block;font-family:'Outfit',sans-serif;font-size:0.84rem;
-                   font-weight:600;color:#c8006e;padding:0.4rem 0.5rem;
-                   border-radius:7px;text-decoration:none;transition:background 0.15s;"
-            onmouseover="this.style.background='rgba(200,0,110,0.08)'"
-            onmouseout="this.style.background='transparent'">
-            Log out
-          </a>
-        </div>
+        <a href="/?logout=1" target="_self" class="gs-nav-logout">Log out</a>
       </div>
     </nav>
     <style>
