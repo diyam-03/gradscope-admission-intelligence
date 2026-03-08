@@ -106,9 +106,9 @@ if recommend or st.session_state.get("rec_done"):
     else:
         dream_max, target_max = 15, 30
 
-    dream_df  = ranked[ranked["subject_rank"] <= dream_max]
-    target_df = ranked[(ranked["subject_rank"] > dream_max) & (ranked["subject_rank"] <= target_max)]
-    safe_df   = ranked[ranked["subject_rank"] > target_max]
+    dream_df  = ranked[ranked["subject_rank"] <= dream_max].head(10)
+    target_df = ranked[(ranked["subject_rank"] > dream_max) & (ranked["subject_rank"] <= target_max)].head(10)
+    safe_df   = ranked[ranked["subject_rank"] > target_max].head(10)
 
     st.markdown('<div class="gs-divider"></div>', unsafe_allow_html=True)
 
@@ -149,39 +149,56 @@ if recommend or st.session_state.get("rec_done"):
       <div style="font-size:0.88rem;color:#0d1b3e;line-height:1.6;">{note}</div>
     </div>""", unsafe_allow_html=True)
 
-    # University tier tables
-    def tier_table(col, data, title, admit, hdr_css, txt_color):
-        with col:
-            st.markdown(f"""
-            <div style="{hdr_css};border-radius:14px 14px 0 0;padding:0.9rem 1.1rem;">
-              <div style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:900;
-                          color:{txt_color};">{title}</div>
-              <div style="font-family:'Outfit',sans-serif;font-size:0.75rem;
-                          color:{txt_color};opacity:0.78;margin-top:0.2rem;">
-                Est. admit chance: {admit}
-              </div>
-            </div>""", unsafe_allow_html=True)
-            if len(data) == 0:
-                st.markdown("""
-                <div style="background:rgba(255,255,255,0.70);border-radius:0 0 14px 14px;
-                            padding:1.5rem;text-align:center;font-size:0.85rem;color:#7b8cb0;">
-                  No universities in this tier for your profile.
-                </div>""", unsafe_allow_html=True)
-            else:
-                disp_cols = {"subject_rank": "Subject Rank", "institution": "University",
-                             "country": "Country"}
-                if "world_rank" in data.columns:
-                    disp_cols["world_rank"] = "World Rank"
-                if "overall_score" in data.columns:
-                    disp_cols["overall_score"] = "QS Score"
-                display = data[[c for c in disp_cols if c in data.columns]].rename(columns=disp_cols)
-                st.dataframe(display, use_container_width=True, hide_index=True,
-                             height=min(len(data)*38+40, 340))
+    # Build HTML for one tier card
+    def tier_card_html(data, title, admit, hdr_grad, badge_color):
+        rows_html = ""
+        if len(data) == 0:
+            rows_html = '<tr><td colspan="4" style="text-align:center;color:#7b8cb0;padding:1.5rem;font-size:0.82rem;">No universities in this tier.</td></tr>'
+        else:
+            for i, (_, row) in enumerate(data.iterrows()):
+                bg = "rgba(13,27,62,0.025)" if i % 2 == 0 else "transparent"
+                wr = f'{int(row["world_rank"])}' if pd.notna(row.get("world_rank")) else "—"
+                score = f'{row["overall_score"]:.1f}' if pd.notna(row.get("overall_score")) else "—"
+                rows_html += f"""
+                <tr style="background:{bg};">
+                  <td style="padding:0.55rem 0.6rem;font-size:0.82rem;font-weight:700;color:#0d1b3e;white-space:nowrap;">#{int(row['subject_rank'])}</td>
+                  <td style="padding:0.55rem 0.6rem;font-size:0.82rem;color:#0d1b3e;line-height:1.3;">{row['institution']}</td>
+                  <td style="padding:0.55rem 0.6rem;font-size:0.78rem;color:#7b8cb0;white-space:nowrap;">{row['country']}</td>
+                  <td style="padding:0.55rem 0.6rem;font-size:0.78rem;color:#7b8cb0;text-align:right;white-space:nowrap;">#{wr}</td>
+                </tr>"""
+
+        return f"""
+        <div style="border-radius:14px;overflow:hidden;
+                    box-shadow:0 4px 20px rgba(13,27,62,0.10);height:100%;">
+          <div style="background:{hdr_grad};padding:1rem 1.1rem;">
+            <div style="font-family:'Fraunces',serif;font-size:1.15rem;font-weight:900;color:#fff;">{title}</div>
+            <div style="font-size:0.75rem;color:rgba(255,255,255,0.78);margin-top:0.2rem;">Est. admit chance: {admit}</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.90);">
+            <table style="width:100%;border-collapse:collapse;">
+              <thead>
+                <tr style="border-bottom:2px solid rgba(13,27,62,0.08);">
+                  <th style="padding:0.5rem 0.6rem;font-size:0.72rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#7b8cb0;text-align:left;">Rank</th>
+                  <th style="padding:0.5rem 0.6rem;font-size:0.72rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#7b8cb0;text-align:left;">University</th>
+                  <th style="padding:0.5rem 0.6rem;font-size:0.72rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#7b8cb0;text-align:left;">Country</th>
+                  <th style="padding:0.5rem 0.6rem;font-size:0.72rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#7b8cb0;text-align:right;">World</th>
+                </tr>
+              </thead>
+              <tbody>{rows_html}</tbody>
+            </table>
+          </div>
+        </div>"""
 
     c1, c2, c3 = st.columns(3)
-    tier_table(c1, dream_df,  "Dream Schools",  "< 30%",  "background:linear-gradient(135deg,#0d1b3e,#1a2d6b)", "#ffffff")
-    tier_table(c2, target_df, "Target Schools", "30–65%", "background:linear-gradient(135deg,#c8006e,#e0057c)", "#ffffff")
-    tier_table(c3, safe_df,   "Safe Schools",   "65–90%", "background:linear-gradient(135deg,#065f46,#047857)", "#ffffff")
+    with c1:
+        st.markdown(tier_card_html(dream_df,  "Dream Schools",  "< 30%",
+                    "linear-gradient(135deg,#0d1b3e,#1a2d6b)", "#0d1b3e"), unsafe_allow_html=True)
+    with c2:
+        st.markdown(tier_card_html(target_df, "Target Schools", "30–65%",
+                    "linear-gradient(135deg,#c8006e,#e0057c)", "#c8006e"), unsafe_allow_html=True)
+    with c3:
+        st.markdown(tier_card_html(safe_df,   "Safe Schools",   "65–90%",
+                    "linear-gradient(135deg,#065f46,#047857)", "#065f46"), unsafe_allow_html=True)
 
     st.markdown('<div class="gs-divider"></div>', unsafe_allow_html=True)
 
