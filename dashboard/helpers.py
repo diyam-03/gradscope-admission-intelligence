@@ -80,42 +80,38 @@ def topnav(active: str = ""):
       {links}
       <div class="gs-nav-spacer"></div>
       <div class="gs-nav-user">
-        <div class="gs-nav-avatar">{user_initial}</div>
+        <div class="gs-nav-avatar" id="gs-avatar-btn" onclick="document.getElementById('gs-dropdown').style.display=document.getElementById('gs-dropdown').style.display==='block'?'none':'block'" style="cursor:pointer;">{user_initial}</div>
         <div class="gs-nav-email">{user_email}</div>
+        <div id="gs-dropdown" style="display:none;position:absolute;top:52px;right:16px;
+          background:#fff;border-radius:12px;padding:0.75rem;min-width:180px;
+          box-shadow:0 8px 32px rgba(13,27,62,0.18);border:1px solid rgba(13,27,62,0.08);
+          z-index:9999;">
+          <div style="font-family:'Outfit',sans-serif;font-size:0.75rem;color:#7b8cb0;
+                      padding:0.2rem 0.5rem 0.5rem;border-bottom:1px solid rgba(13,27,62,0.07);
+                      margin-bottom:0.4rem;font-weight:600;">{user_email}</div>
+          <a href="/?logout=1" target="_self"
+            style="display:block;font-family:'Outfit',sans-serif;font-size:0.84rem;
+                   font-weight:600;color:#c8006e;padding:0.4rem 0.5rem;
+                   border-radius:7px;text-decoration:none;transition:background 0.15s;"
+            onmouseover="this.style.background='rgba(200,0,110,0.08)'"
+            onmouseout="this.style.background='transparent'">
+            Log out
+          </a>
+        </div>
       </div>
     </nav>
+    <style>
+    .gs-nav {{ position: relative; }}
+    </style>
     """, unsafe_allow_html=True)
 
-    # Logout button — inside nav row as HTML, no wrapping
-    st.markdown("""
-    <style>
-    #nav-logout-wrap { display:flex; justify-content:flex-end; margin-top:-0.55rem; margin-bottom:0.6rem; }
-    #nav-logout-wrap .stButton > button {
-      white-space: nowrap !important;
-      font-size: 0.76rem !important;
-      font-family: 'Outfit', sans-serif !important;
-      font-weight: 600 !important;
-      color: #7b8cb0 !important;
-      background: transparent !important;
-      border: 1.5px solid rgba(13,27,62,0.14) !important;
-      border-radius: 8px !important;
-      padding: 0.28rem 0.85rem !important;
-      width: auto !important;
-      min-width: 0 !important;
-    }
-    #nav-logout-wrap .stButton > button:hover {
-      background: rgba(200,0,110,0.06) !important;
-      border-color: #c8006e !important;
-      color: #c8006e !important;
-    }
-    </style>
-    <div id="nav-logout-wrap">
-    """, unsafe_allow_html=True)
-    if st.button("Log out", key="nav_logout_btn"):
+    # Handle logout via query param
+    params = st.query_params
+    if params.get("logout") == "1":
         st.session_state.pop("user", None)
         st.session_state.pop("user_email", None)
+        st.query_params.clear()
         st.switch_page("app.py")
-    st.markdown("</div>", unsafe_allow_html=True)
 
 
 def page_header(eyebrow: str, title: str, subtitle: str = "", active: str = ""):

@@ -192,14 +192,23 @@ def show_auth_page():
                         "options": {"data": {"full_name": signup_name.strip()}}
                     })
                     if res.user:
-                        # If email confirmation is OFF — session is immediately valid
+                        # Save user profile to Supabase DB
+                        try:
+                            supabase.table("users").upsert({
+                                "id": res.user.id,
+                                "email": signup_email.strip(),
+                                "full_name": signup_name.strip(),
+                                "created_at": res.user.created_at.isoformat() if res.user.created_at else None,
+                            }).execute()
+                        except Exception:
+                            pass  # Non-fatal — auth still works
+
                         if res.session:
                             st.session_state["user"]       = res.user
                             st.session_state["user_email"] = res.user.email
                             st.success(f"Welcome to GradScope, {signup_name.split()[0]}!")
                             st.rerun()
                         else:
-                            # Email confirmation is ON — ask them to verify
                             st.success("Account created! Check your email to verify, then sign in.")
                     else:
                         st.error("Something went wrong. Please try again.")
