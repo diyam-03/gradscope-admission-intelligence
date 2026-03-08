@@ -10,13 +10,13 @@ def load_css():
 
 def topnav(active: str = ""):
     pages = [
-        ("Home",         "app"),
-        ("Analytics",    "pages/1_Admission_Analytics"),
-        ("Universities", "pages/2_University_Explorer"),
-        ("Profile",      "pages/3_Profile_Analyzer"),
-        ("Recommend",    "pages/4_University_Recommendation"),
-        ("Assistant",    "pages/5_Admission_Assistant"),
-        ("Compare",      "pages/6_University_Comparison"),
+        ("Home",                    "app"),
+        ("Profile Analyzer",        "pages/3_Profile_Analyzer"),
+        ("Explore Universities",    "pages/2_University_Explorer"),
+        ("Universities Recommended","pages/4_University_Recommendation"),
+        ("Compare Universities",    "pages/6_University_Comparison"),
+        ("Admission Assistant",     "pages/5_Admission_Assistant"),
+        ("Admission Analytics",     "pages/1_Admission_Analytics"),
     ]
 
     st.markdown("""
