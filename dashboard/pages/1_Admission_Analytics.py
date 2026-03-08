@@ -5,7 +5,7 @@ import plotly.express as px
 from pathlib import Path
 from helpers import page_header, kpi_row
 
-st.set_page_config(page_title="Admission Analytics · GradScope", page_icon="📊", layout="wide")
+st.set_page_config(page_title="Admission Analytics · GradScope", page_icon="📊", layout="wide", initial_sidebar_state="expanded")
 page_header("📊 Analyze", "Admission Analytics",
             "Explore what really drives admission decisions — based on 400+ real graduate applicant records.")
 

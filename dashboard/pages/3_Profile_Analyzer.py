@@ -8,9 +8,10 @@ import pandas as pd
 from pathlib import Path
 from helpers import page_header
 
-st.set_page_config(page_title="Profile Analyzer · GradScope", page_icon="🎓", layout="wide")
+st.set_page_config(page_title="Profile Analyzer · GradScope", page_icon="🎓", layout="wide", initial_sidebar_state="expanded")
 page_header("Evaluate", "Profile Analyzer",
-            "Fill in your details honestly, click Analyze, and get a real ML-powered admission prediction.")
+            "Fill in your details honestly, click Analyze, and get a real ML-powered admission prediction.",
+            active="Profile_Analyzer")
 
 try:
     from pipeline.predictor import predict_chance

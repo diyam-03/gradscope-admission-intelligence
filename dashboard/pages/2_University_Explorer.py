@@ -4,7 +4,7 @@ import plotly.express as px
 from pathlib import Path
 from helpers import page_header, kpi_row
 
-st.set_page_config(page_title="University Explorer · GradScope", page_icon="🏫", layout="wide")
+st.set_page_config(page_title="University Explorer · GradScope", page_icon="🏫", layout="wide", initial_sidebar_state="expanded")
 page_header("🏫 Explore", "University Explorer",
             "Browse and filter 2,000+ universities across 70+ countries.")
 

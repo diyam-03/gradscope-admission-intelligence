@@ -1,9 +1,9 @@
 import streamlit as st
 from helpers import page_header
 
-st.set_page_config(page_title="Admission Assistant · GradScope", page_icon="💬", layout="wide")
+st.set_page_config(page_title="Admission Assistant · GradScope", page_icon="💬", layout="wide", initial_sidebar_state="expanded")
 page_header("Guidance", "Admission Assistant",
-            "Ask anything about graduate admissions — GRE, SoPs, deadlines, funding and more.")
+            "Ask anything about graduate admissions — GRE, SoPs, deadlines, funding and more.", active="Admission_Assistant")
 
 KB = [
     {"keywords":["gre","gre score"],"topic":"GRE Score","color":"#0d1b3e",

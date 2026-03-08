@@ -5,7 +5,7 @@ import plotly.express as px
 from pathlib import Path
 from helpers import page_header
 
-st.set_page_config(page_title="University Comparison · GradScope", page_icon="⚖️", layout="wide")
+st.set_page_config(page_title="University Comparison · GradScope", page_icon="⚖️", layout="wide", initial_sidebar_state="expanded")
 page_header("⚖️ Compare", "University Comparison",
             "Select up to 5 universities for a detailed side-by-side comparison across all ranking dimensions.")
 

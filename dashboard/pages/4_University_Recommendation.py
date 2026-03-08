@@ -4,7 +4,7 @@ import plotly.express as px
 from pathlib import Path
 from helpers import page_header, kpi_row
 
-st.set_page_config(page_title="University Recommendation · GradScope", page_icon="🎯", layout="wide")
+st.set_page_config(page_title="University Recommendation · GradScope", page_icon="🎯", layout="wide", initial_sidebar_state="expanded")
 page_header("🎯 Discover", "University Recommendation",
             "Get your personalised Dream, Target and Safe university list based on your profile.")
 

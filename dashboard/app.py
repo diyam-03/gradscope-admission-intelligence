@@ -1,5 +1,5 @@
 import streamlit as st
-from helpers import load_css
+from helpers import load_css, topnav
 
 st.set_page_config(
     page_title="GradScope",
@@ -8,6 +8,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 load_css()
+topnav("app")
 
 st.sidebar.markdown("""
 <div style="padding:1.75rem 0.75rem 1.25rem;">
