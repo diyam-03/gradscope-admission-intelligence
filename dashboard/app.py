@@ -3,20 +3,18 @@ from helpers import load_css, topnav
 from auth import show_auth_page, get_session
 
 st.set_page_config(
-    page_title="GradScope — Admission Intelligence",
+    page_title="GradScope - Admission Intelligence",
     page_icon="🎓",
     layout="wide",
     initial_sidebar_state="collapsed",
 )
 
-# ── Auth gate — show login/signup if not logged in ─────────────────────────
 if not show_auth_page():
     st.stop()
 
 load_css()
 topnav("app")
 
-# ── Animated home page styles ─────────────────────────────────────────────────
 st.markdown("""
 <style>
 @keyframes fadeUp {
@@ -256,7 +254,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ── Hero ──────────────────────────────────────────────────────────────────────
+
 st.markdown("""
 <div class="gs-home-hero">
   <div class="gs-brand">
@@ -270,9 +268,8 @@ st.markdown("""
     Your smartest move<br>starts with <span>better data</span>
   </div>
   <div class="gs-hero-sub">
-    Analyse real admission trends, predict your chances with ML,
-    and discover universities where you are most competitive —
-    all in one platform built for serious applicants.
+    Find universities that match your profile, compare programs worldwide, 
+    and predict your admission chances using intelligent analytics.
   </div>
   <div class="gs-hero-pills">
     <span class="gs-hero-pill">Real QS 2025 Data</span>
@@ -303,7 +300,7 @@ st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown('<div class="gs-divider"></div>', unsafe_allow_html=True)
 
-# ── Features ──────────────────────────────────────────────────────────────────
+
 st.markdown("""
 <div class="gs-section-head">
   <div class="gs-section-label">What's Inside</div>
@@ -336,7 +333,7 @@ for col, (icon, title, desc, grad, bg, delay) in zip(all_cols, features):
         <div style="height:1rem;"></div>
         """, unsafe_allow_html=True)
 
-# ── CTA strip ─────────────────────────────────────────────────────────────────
+
 st.markdown("""
 <div class="gs-cta-strip">
   <div>
@@ -365,7 +362,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# ── Footer ─────────────────────────────────────────────────────────────────────
+
 st.markdown("""
 <div class="gs-footer">
   <span>GradScope · Built with Streamlit, Supabase, Scikit-learn, Plotly</span>
