@@ -1,12 +1,10 @@
-import sys
-import os
+import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 import streamlit as st
 import plotly.graph_objects as go
 import plotly.express as px
 import pandas as pd
-import numpy as np
 from pathlib import Path
 from helpers import page_header
 
@@ -43,9 +41,8 @@ def load_admissions():
 
 df_adm = load_admissions()
 T = dict(paper_bgcolor="rgba(255,255,255,0.80)", plot_bgcolor="rgba(247,248,252,0.90)",
-         font_family="Outfit", font_color="#3d4f7a", margin=dict(l=0,r=0,t=10,b=0))
+         font_family="Outfit", font_color="#3d4f7a", margin=dict(l=0,r=120,t=10,b=0))
 
-# SOP questions — things a student can actually self-assess
 SOP_OPTIONS = {
     1.0: "I have not started writing yet",
     2.0: "I have a rough draft with no specific research focus",
@@ -53,8 +50,6 @@ SOP_OPTIONS = {
     4.0: "My SoP clearly states goals, mentions specific professors and their work",
     5.0: "My SoP is polished, reviewed by mentors, and tailored per university",
 }
-
-# LOR questions — things a student can actually answer
 LOR_OPTIONS = {
     1.0: "From a professor who barely knows me, likely a generic letter",
     2.0: "From a professor I attended class with but did not work closely with",
@@ -63,86 +58,77 @@ LOR_OPTIONS = {
     5.0: "From a senior professor who can compare me to top students they have taught",
 }
 
-# ── Input form ────────────────────────────────────────────────────────────────
+# ── Step 1 ────────────────────────────────────────────────────────────────────
 st.markdown('<div class="gs-label">Step 1 — Enter Your Academic Scores</div>',
             unsafe_allow_html=True)
 
-with st.container():
-    st.markdown('<div class="gs-filter">', unsafe_allow_html=True)
-    r1c1, r1c2, r1c3 = st.columns(3)
-    with r1c1:
-        gre = st.number_input("GRE Score (260–340)", min_value=260, max_value=340,
-                              value=None, placeholder="e.g. 315")
-    with r1c2:
-        toefl = st.number_input("TOEFL Score (0–120)", min_value=0, max_value=120,
-                                value=None, placeholder="e.g. 105")
-    with r1c3:
-        cgpa = st.number_input("CGPA (0–10)", min_value=0.0, max_value=10.0,
-                               value=None, placeholder="e.g. 8.5", step=0.1)
+r1c1, r1c2, r1c3 = st.columns(3)
+with r1c1:
+    gre = st.number_input("GRE Score (260–340)", min_value=260, max_value=340,
+                          value=None, placeholder="e.g. 315")
+with r1c2:
+    toefl = st.number_input("TOEFL Score (0–120)", min_value=0, max_value=120,
+                            value=None, placeholder="e.g. 105")
+with r1c3:
+    cgpa = st.number_input("CGPA (0–10)", min_value=0.0, max_value=10.0,
+                           value=None, placeholder="e.g. 8.5", step=0.1)
 
-    r2c1, r2c2 = st.columns(2)
-    with r2c1:
-        uni_r = st.selectbox("Target University Tier",
-                             options=[None, 1, 2, 3, 4, 5],
-                             format_func=lambda x: "Select..." if x is None else {
-                                 1: "1 — Top 10 globally (MIT, Stanford, Harvard)",
-                                 2: "2 — Top 50 globally",
-                                 3: "3 — Top 100–200 globally",
-                                 4: "4 — Top 300–500 globally",
-                                 5: "5 — Any accredited university",
-                             }[x])
-    with r2c2:
-        research = st.selectbox("Do you have research experience?",
-                                options=[None, "Yes", "No"],
-                                format_func=lambda x: "Select..." if x is None else x)
-    st.markdown('</div>', unsafe_allow_html=True)
+r2c1, r2c2 = st.columns(2)
+with r2c1:
+    uni_r = st.selectbox("Target University Tier",
+                         options=[None, 1, 2, 3, 4, 5],
+                         format_func=lambda x: "Select..." if x is None else {
+                             1: "1 — Top 10 globally (MIT, Stanford, Harvard)",
+                             2: "2 — Top 50 globally",
+                             3: "3 — Top 100–200 globally",
+                             4: "4 — Top 300–500 globally",
+                             5: "5 — Any accredited university",
+                         }[x])
+with r2c2:
+    research = st.selectbox("Do you have research experience?",
+                            options=[None, "Yes", "No"],
+                            format_func=lambda x: "Select..." if x is None else x)
 
+# ── Step 2 ────────────────────────────────────────────────────────────────────
 st.markdown('<div style="height:0.5rem"></div>', unsafe_allow_html=True)
 st.markdown('<div class="gs-label">Step 2 — Self-Assess Your Application Materials</div>',
             unsafe_allow_html=True)
 
-with st.container():
-    st.markdown('<div class="gs-filter">', unsafe_allow_html=True)
-    sc1, sc2 = st.columns(2)
-    with sc1:
-        st.markdown("""
-        <div style="font-family:'Outfit',sans-serif;font-size:0.84rem;font-weight:600;
-                    color:#0d1b3e;margin-bottom:0.4rem;">
-            Statement of Purpose — where are you right now?
-        </div>""", unsafe_allow_html=True)
-        sop = st.radio("sop_q", list(SOP_OPTIONS.keys()),
-                       format_func=lambda x: SOP_OPTIONS[x],
-                       label_visibility="collapsed", index=None)
-    with sc2:
-        st.markdown("""
-        <div style="font-family:'Outfit',sans-serif;font-size:0.84rem;font-weight:600;
-                    color:#0d1b3e;margin-bottom:0.4rem;">
-            Letters of Recommendation — who is writing yours?
-        </div>""", unsafe_allow_html=True)
-        lor = st.radio("lor_q", list(LOR_OPTIONS.keys()),
-                       format_func=lambda x: LOR_OPTIONS[x],
-                       label_visibility="collapsed", index=None)
-    st.markdown('</div>', unsafe_allow_html=True)
+sc1, sc2 = st.columns(2)
+with sc1:
+    st.markdown("""
+    <div style="font-family:'Outfit',sans-serif;font-size:0.84rem;font-weight:600;
+                color:#0d1b3e;margin-bottom:0.4rem;">
+        Statement of Purpose — where are you right now?
+    </div>""", unsafe_allow_html=True)
+    sop = st.radio("sop_q", list(SOP_OPTIONS.keys()),
+                   format_func=lambda x: SOP_OPTIONS[x],
+                   label_visibility="collapsed", index=None)
+with sc2:
+    st.markdown("""
+    <div style="font-family:'Outfit',sans-serif;font-size:0.84rem;font-weight:600;
+                color:#0d1b3e;margin-bottom:0.4rem;">
+        Letters of Recommendation — who is writing yours?
+    </div>""", unsafe_allow_html=True)
+    lor = st.radio("lor_q", list(LOR_OPTIONS.keys()),
+                   format_func=lambda x: LOR_OPTIONS[x],
+                   label_visibility="collapsed", index=None)
 
 st.markdown('<div style="height:0.75rem"></div>', unsafe_allow_html=True)
 
-# Check all fields filled
-all_filled = all([
-    gre is not None, toefl is not None, cgpa is not None,
-    uni_r is not None, research is not None,
-    sop is not None, lor is not None
-])
+all_filled = all([gre is not None, toefl is not None, cgpa is not None,
+                  uni_r is not None, research is not None,
+                  sop is not None, lor is not None])
 
-analyze = st.button("Analyze My Profile", type="primary", use_container_width=False,
-                    disabled=not all_filled)
+analyze = st.button("Analyze My Profile", type="primary", disabled=not all_filled)
 
 if not all_filled:
     st.markdown("""
-    <div style="font-size:0.82rem;color:#7b8cb0;margin-top:0.5rem;">
+    <div style="font-size:0.82rem;color:#7b8cb0;margin-top:0.4rem;">
         Fill in all fields above to enable the analyzer.
     </div>""", unsafe_allow_html=True)
 
-# ── Results — only show after button clicked ──────────────────────────────────
+# ── Results ───────────────────────────────────────────────────────────────────
 if analyze or st.session_state.get("analyzed"):
     if analyze:
         st.session_state["analyzed"] = True
@@ -152,7 +138,7 @@ if analyze or st.session_state.get("analyzed"):
             "sop": sop, "lor": lor
         }
 
-    inp = st.session_state.get("inputs", {})
+    inp   = st.session_state.get("inputs", {})
     gre_v   = inp.get("gre", 300)
     toefl_v = inp.get("toefl", 100)
     cgpa_v  = inp.get("cgpa", 8.0)
@@ -167,9 +153,9 @@ if analyze or st.session_state.get("analyzed"):
         chance = round(((gre_v/340)*0.20+(toefl_v/120)*0.10+(cgpa_v/10)*0.25+
                         (sop_v/5)*0.15+(lor_v/5)*0.15+(uni_v/5)*0.10+res_v*0.05)*100, 1)
 
-    if chance >= 75:   clr, lbl, pill = "#10b981", "Strong Admit Profile",  "green"
-    elif chance >= 55: clr, lbl, pill = "#f5a623", "Competitive Profile",   "gold"
-    else:              clr, lbl, pill = "#c8006e", "Needs Strengthening",   "magenta"
+    if chance >= 75:   clr, lbl, pill = "#10b981", "Strong Admit Profile", "green"
+    elif chance >= 55: clr, lbl, pill = "#f5a623", "Competitive Profile",  "gold"
+    else:              clr, lbl, pill = "#c8006e", "Needs Strengthening",  "magenta"
 
     bar = ("linear-gradient(135deg,#10b981,#4a90d9)" if chance >= 75
            else "linear-gradient(135deg,#f5a623,#f25c54)" if chance >= 55
@@ -247,12 +233,14 @@ if analyze or st.session_state.get("analyzed"):
     ].copy().head(10)
 
     if len(similar) > 0:
-        avg_admit = similar["Admit"].mean()
         k1, k2, k3 = st.columns(3)
         for col, lbl, val, sub, b in [
-            (k1, "Avg Admit Chance", f"{avg_admit:.1f}%", "among similar profiles", "linear-gradient(90deg,#c8006e,#f5a623)"),
-            (k2, "Highest Chance",   f"{similar['Admit'].max():.1f}%", "in similar group", "linear-gradient(90deg,#10b981,#4a90d9)"),
-            (k3, "Similar Profiles Found", str(len(similar)), "in our dataset", "linear-gradient(90deg,#0d1b3e,#4a90d9)"),
+            (k1, "Avg Admit Chance", f"{similar['Admit'].mean():.1f}%",
+             "among similar profiles", "linear-gradient(90deg,#c8006e,#f5a623)"),
+            (k2, "Highest Chance", f"{similar['Admit'].max():.1f}%",
+             "in similar group", "linear-gradient(90deg,#10b981,#4a90d9)"),
+            (k3, "Similar Profiles Found", str(len(similar)),
+             "in our dataset", "linear-gradient(90deg,#0d1b3e,#4a90d9)"),
         ]:
             with col:
                 st.markdown(f"""
@@ -264,8 +252,7 @@ if analyze or st.session_state.get("analyzed"):
                 </div>""", unsafe_allow_html=True)
 
         st.markdown('<div style="height:1rem"></div>', unsafe_allow_html=True)
-        fig2 = px.scatter(similar, x="GRE", y="Admit",
-                          color="Research",
+        fig2 = px.scatter(similar, x="GRE", y="Admit", color="Research",
                           color_discrete_map={0: "#f5a623", 1: "#10b981"},
                           size="CGPA",
                           hover_data=["TOEFL", "CGPA", "SOP", "LOR"],
@@ -275,7 +262,11 @@ if analyze or st.session_state.get("analyzed"):
         fig2.add_hline(y=chance, line_dash="dot", line_color="#c8006e",
                        annotation_text=f"Your prediction: {chance}%",
                        annotation_position="top right")
-        fig2.update_layout(**T, height=300,
+        fig2.update_layout(paper_bgcolor="rgba(255,255,255,0.80)",
+                           plot_bgcolor="rgba(247,248,252,0.90)",
+                           font_family="Outfit", font_color="#3d4f7a",
+                           margin=dict(l=0, r=160, t=10, b=0),
+                           height=320,
                            xaxis=dict(showgrid=True, gridcolor="rgba(13,27,62,0.06)"),
                            yaxis=dict(showgrid=True, gridcolor="rgba(13,27,62,0.06)"),
                            title_font=dict(size=12, color="#0d1b3e", family="Fraunces"))
@@ -306,7 +297,7 @@ if analyze or st.session_state.get("analyzed"):
                         "A weak SoP costs admissions even with great scores. Name specific faculty you want to work with, tie your past experience to your future goals, and get it reviewed by a mentor."))
     if lor_v < 4.0:
         actions.append(("Secure Stronger LoRs", "#10b981",
-                        "Ask people who have directly supervised your work. Give them your CV and SoP draft so they can write specifically about your contributions rather than a generic letter."))
+                        "Ask people who directly supervised your work. Give them your CV and SoP draft so they can write specifically about your contributions rather than a generic letter."))
     if not actions:
         actions.append(("Apply Strategically", "#10b981",
                         "Your profile looks competitive. Build a balanced list — 2-3 dream schools, 3-4 targets, 2-3 safe options. Use the University Recommendation page to find the right fit."))
