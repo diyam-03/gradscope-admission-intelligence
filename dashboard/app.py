@@ -10,7 +10,6 @@ st.set_page_config(
 load_css()
 topnav("app")
 
-# ── Animated home page styles ─────────────────────────────────────────────────
 st.markdown("""
 <style>
 @keyframes fadeUp {
@@ -250,7 +249,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ── Hero ──────────────────────────────────────────────────────────────────────
+
 st.markdown("""
 <div class="gs-home-hero">
   <div class="gs-brand">
@@ -278,7 +277,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# ── Stats strip ───────────────────────────────────────────────────────────────
+
 stats = [
     ("1,422+", "Universities",     "from QS 2025 rankings",    "#c8006e", "0.1s"),
     ("55",     "Subject Rankings", "across all disciplines",    "#0d1b3e", "0.2s"),
@@ -297,7 +296,7 @@ st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown('<div class="gs-divider"></div>', unsafe_allow_html=True)
 
-# ── Features ──────────────────────────────────────────────────────────────────
+
 st.markdown("""
 <div class="gs-section-head">
   <div class="gs-section-label">What's Inside</div>
@@ -330,7 +329,7 @@ for col, (icon, title, desc, grad, bg, delay) in zip(all_cols, features):
         <div style="height:1rem;"></div>
         """, unsafe_allow_html=True)
 
-# ── CTA strip ─────────────────────────────────────────────────────────────────
+
 st.markdown("""
 <div class="gs-cta-strip">
   <div>
@@ -342,24 +341,24 @@ st.markdown("""
     </div>
   </div>
   <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
-    <div style="background:linear-gradient(90deg,#c8006e,#f5a623);
+    <a href="/Profile_Analyzer" target="_self" style="background:linear-gradient(90deg,#c8006e,#f5a623);
                 border-radius:10px;padding:0.7rem 1.5rem;
                 font-family:'Outfit',sans-serif;font-size:0.88rem;
-                font-weight:700;color:#fff;cursor:pointer;
-                box-shadow:0 4px 14px rgba(200,0,110,0.35);">
+                font-weight:700;color:#fff;text-decoration:none;
+                box-shadow:0 4px 14px rgba(200,0,110,0.35);display:inline-block;">
       Analyze My Profile
-    </div>
-    <div style="background:rgba(255,255,255,0.10);border:1.5px solid rgba(255,255,255,0.25);
+    </a>
+    <a href="/University_Recommendation" target="_self" style="background:rgba(255,255,255,0.10);border:1.5px solid rgba(255,255,255,0.25);
                 border-radius:10px;padding:0.7rem 1.5rem;
                 font-family:'Outfit',sans-serif;font-size:0.88rem;
-                font-weight:700;color:#fff;cursor:pointer;">
+                font-weight:700;color:#fff;text-decoration:none;display:inline-block;">
       Get Recommendations
-    </div>
+    </a>
   </div>
 </div>
 """, unsafe_allow_html=True)
 
-# ── Footer ─────────────────────────────────────────────────────────────────────
+
 st.markdown("""
 <div class="gs-footer">
   <span>GradScope · Built with Streamlit, Supabase, Scikit-learn, Plotly</span>
