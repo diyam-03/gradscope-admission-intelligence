@@ -10,25 +10,29 @@ def load_css():
 
 def topnav(active: str = ""):
     pages = [
-        ("Home",              "app"),
-        ("Analytics",         "Admission_Analytics"),
-        ("Universities",      "University_Explorer"),
-        ("Profile",           "Profile_Analyzer"),
-        ("Recommend",         "University_Recommendation"),
-        ("Assistant",         "Admission_Assistant"),
-        ("Compare",           "University_Comparison"),
+        ("Home",         "app"),
+        ("Analytics",    "pages/1_Admission_Analytics"),
+        ("Universities", "pages/2_University_Explorer"),
+        ("Profile",      "pages/3_Profile_Analyzer"),
+        ("Recommend",    "pages/4_University_Recommendation"),
+        ("Assistant",    "pages/5_Admission_Assistant"),
+        ("Compare",      "pages/6_University_Comparison"),
     ]
-    links = ""
-    for label, slug in pages:
-        css_class = "active" if active == slug else ""
-        links += f'<a href="/{slug}" class="{css_class}" target="_self">{label}</a>'
 
-    st.markdown(f"""
-    <div class="gs-topnav">
-      <div class="gs-topnav-brand">GradScope</div>
-      {links}
+    st.markdown("""
+    <div style="background:#0d1b3e;border-radius:12px;padding:0.5rem 1rem;
+                margin-bottom:1.25rem;box-shadow:0 6px 24px rgba(13,27,62,0.13);
+                display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;">
+      <span style="font-family:'Fraunces',serif;font-size:1rem;font-weight:900;
+                   color:#fff;margin-right:0.75rem;white-space:nowrap;">GradScope</span>
     </div>
     """, unsafe_allow_html=True)
+
+    # Use native Streamlit page links — these never open new tabs
+    cols = st.columns(len(pages))
+    for col, (label, path) in zip(cols, pages):
+        with col:
+            st.page_link(f"{path}.py", label=label, use_container_width=True)
 
 
 def page_header(eyebrow: str, title: str, subtitle: str = "", active: str = ""):
