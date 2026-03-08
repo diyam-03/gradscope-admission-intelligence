@@ -341,3 +341,46 @@ p, li { font-family: 'Outfit', sans-serif !important;
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(200,0,110,0.25); border-radius: 10px; }
+
+/* Radio buttons — SOP and LOR questions */
+.stRadio > div {
+    gap: 0.4rem !important;
+}
+.stRadio > div > label {
+    background: rgba(255,255,255,0.70) !important;
+    border: 1.5px solid rgba(13,27,62,0.12) !important;
+    border-radius: 8px !important;
+    padding: 0.55rem 0.9rem !important;
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 0.84rem !important;
+    color: #3d4f7a !important;
+    cursor: pointer !important;
+    transition: all 0.15s ease !important;
+    width: 100% !important;
+}
+.stRadio > div > label:hover {
+    background: rgba(200,0,110,0.06) !important;
+    border-color: rgba(200,0,110,0.30) !important;
+    color: #0d1b3e !important;
+}
+.stRadio > div > label[data-selected="true"] {
+    background: rgba(200,0,110,0.10) !important;
+    border-color: #c8006e !important;
+    color: #c8006e !important;
+    font-weight: 600 !important;
+}
+
+/* Number input */
+.stNumberInput > div > div > input {
+    background: rgba(255,255,255,0.82) !important;
+    border: 1.5px solid rgba(13,27,62,0.15) !important;
+    border-radius: 8px !important;
+    font-family: 'Outfit', sans-serif !important;
+    color: #0d1b3e !important;
+    font-size: 0.9rem !important;
+    padding: 0.5rem 0.75rem !important;
+}
+.stNumberInput > div > div > input:focus {
+    border-color: #c8006e !important;
+    box-shadow: 0 0 0 3px rgba(200,0,110,0.10) !important;
+}
