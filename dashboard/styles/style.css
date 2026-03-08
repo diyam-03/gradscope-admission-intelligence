@@ -461,3 +461,20 @@ button[kind="header"] {
 [data-testid="stSidebar"] { display: none !important; }
 [data-testid="collapsedControl"] { display: none !important; }
 .block-container { max-width: 1200px !important; padding-left: 2rem !important; padding-right: 2rem !important; }
+
+/* GradScope brand nav link */
+[data-testid="stPageLink"]:first-child a,
+[data-testid="stPageLink"]:first-child button {
+  background: #0d1b3e !important;
+  color: #fff !important;
+  font-family: 'Fraunces', serif !important;
+  font-weight: 900 !important;
+  font-size: 0.95rem !important;
+  border-radius: 10px !important;
+  border: none !important;
+}
+[data-testid="stPageLink"]:first-child a:hover,
+[data-testid="stPageLink"]:first-child button:hover {
+  background: #162248 !important;
+  color: #fff !important;
+}

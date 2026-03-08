@@ -19,20 +19,17 @@ def topnav(active: str = ""):
         ("Admission Analytics",     "pages/1_Admission_Analytics"),
     ]
 
-    st.markdown("""
-    <div style="background:#0d1b3e;border-radius:12px;padding:0.5rem 1rem;
-                margin-bottom:1.25rem;box-shadow:0 6px 24px rgba(13,27,62,0.13);
-                display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;">
-      <span style="font-family:'Fraunces',serif;font-size:1rem;font-weight:900;
-                   color:#fff;margin-right:0.75rem;white-space:nowrap;">GradScope</span>
-    </div>
-    """, unsafe_allow_html=True)
+    # GradScope brand + nav in one row
+    all_cols = st.columns([0.9, 1.5, 1.5, 1.85, 1.85, 1.65, 1.85])
 
-    # Use native Streamlit page links — these never open new tabs
-    cols = st.columns(len(pages))
-    for col, (label, path) in zip(cols, pages):
+    with all_cols[0]:
+        st.page_link("app.py", label="🎓 GradScope", use_container_width=True)
+
+    for col, (label, path) in zip(all_cols[1:], pages[1:]):
         with col:
             st.page_link(f"{path}.py", label=label, use_container_width=True)
+
+    st.markdown('<div style="margin-bottom:1rem;"></div>', unsafe_allow_html=True)
 
 
 def page_header(eyebrow: str, title: str, subtitle: str = "", active: str = ""):
