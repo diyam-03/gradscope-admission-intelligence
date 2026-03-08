@@ -174,11 +174,13 @@ if len(rcols) >= 3:
                     text=f'{row["overall_score"]:.1f}',
                     textposition="outside",
                     showlegend=False))
-            fig2.update_layout(**T, barmode="overlay",
-                               xaxis=dict(showgrid=True,
-                                          gridcolor="rgba(13,27,62,0.06)", range=[0, 110]),
-                               yaxis=dict(showgrid=False),
-                               height=380, margin=dict(l=0,r=40,t=10,b=10))
+            fig2.update_layout(
+                paper_bgcolor="rgba(255,255,255,0.80)",
+                plot_bgcolor="rgba(247,248,252,0.90)",
+                font_family="Outfit", font_color="#3d4f7a",
+                xaxis=dict(showgrid=True, gridcolor="rgba(13,27,62,0.06)", range=[0, 110]),
+                yaxis=dict(showgrid=False),
+                height=380, margin=dict(l=0,r=40,t=10,b=10))
             st.plotly_chart(fig2, use_container_width=True)
 
     st.markdown('<div class="gs-divider"></div>', unsafe_allow_html=True)
