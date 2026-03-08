@@ -149,51 +149,45 @@ if recommend or st.session_state.get("rec_done"):
       <div style="font-size:0.88rem;color:#0d1b3e;line-height:1.6;">{note}</div>
     </div>""", unsafe_allow_html=True)
 
-    def tier_rows_html(data):
-        if len(data) == 0:
-            return '<div style="padding:1.2rem;text-align:center;color:#7b8cb0;font-size:0.83rem;">No universities in this tier.</div>'
-        rows = ""
-        for i, (_, row) in enumerate(data.iterrows()):
-            bg = "rgba(13,27,62,0.025)" if i % 2 == 0 else "rgba(255,255,255,0)"
-            wr = f'#{int(row["world_rank"])}' if pd.notna(row.get("world_rank")) else "—"
-            rows += f"""
-            <div style="display:grid;grid-template-columns:60px 1fr 160px 80px;
-                        align-items:center;padding:0.6rem 1.1rem;background:{bg};
-                        border-bottom:1px solid rgba(13,27,62,0.05);">
-              <div style="font-size:0.85rem;font-weight:700;color:#0d1b3e;">#{int(row['subject_rank'])}</div>
-              <div style="font-size:0.85rem;color:#0d1b3e;">{row['institution']}</div>
-              <div style="font-size:0.80rem;color:#7b8cb0;">{row['country']}</div>
-              <div style="font-size:0.80rem;color:#7b8cb0;text-align:right;">{wr}</div>
-            </div>"""
-        return rows
-
     def tier_card(data, title, admit, accent, badge_bg):
-        header_row = f"""
-        <div style="display:grid;grid-template-columns:60px 1fr 160px 80px;
-                    padding:0.45rem 1.1rem;border-bottom:2px solid rgba(13,27,62,0.08);">
-          <div style="font-size:0.70rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:#7b8cb0;">Rank</div>
-          <div style="font-size:0.70rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:#7b8cb0;">University</div>
-          <div style="font-size:0.70rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:#7b8cb0;">Country</div>
-          <div style="font-size:0.70rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:#7b8cb0;text-align:right;">World Rank</div>
-        </div>"""
-        return f"""
-        <div style="background:rgba(255,255,255,0.88);border-radius:14px;overflow:hidden;
-                    box-shadow:0 4px 20px rgba(13,27,62,0.08);margin-bottom:1.1rem;
-                    border-left:5px solid {accent};">
-          <div style="background:{badge_bg};padding:0.85rem 1.1rem;
-                      display:flex;align-items:center;justify-content:space-between;">
-            <div>
-              <div style="font-family:'Fraunces',serif;font-size:1.1rem;font-weight:900;color:#fff;">{title}</div>
-              <div style="font-size:0.75rem;color:rgba(255,255,255,0.80);margin-top:0.1rem;">Est. admit chance: {admit}</div>
-            </div>
-            <div style="background:rgba(255,255,255,0.18);border-radius:8px;
-                        padding:0.3rem 0.75rem;font-size:0.80rem;font-weight:700;color:#fff;">
-              {len(data)} universities
-            </div>
-          </div>
-          {header_row}
-          {tier_rows_html(data)}
-        </div>"""
+        if len(data) == 0:
+            body = '<tr><td colspan="4" style="padding:1.5rem;text-align:center;color:#7b8cb0;font-size:0.83rem;">No universities in this tier.</td></tr>'
+        else:
+            body = ""
+            for i, (_, row) in enumerate(data.iterrows()):
+                bg = "#f7f8fc" if i % 2 == 0 else "#ffffff"
+                wr = f'#{int(row["world_rank"])}' if pd.notna(row.get("world_rank")) else "—"
+                body += (
+                    f'<tr style="background:{bg};">'
+                    f'<td style="padding:0.6rem 1rem;font-size:0.84rem;font-weight:700;color:#0d1b3e;white-space:nowrap;">#{int(row["subject_rank"])}</td>'
+                    f'<td style="padding:0.6rem 1rem;font-size:0.84rem;color:#0d1b3e;">{row["institution"]}</td>'
+                    f'<td style="padding:0.6rem 1rem;font-size:0.80rem;color:#7b8cb0;">{row["country"]}</td>'
+                    f'<td style="padding:0.6rem 1rem;font-size:0.80rem;color:#7b8cb0;text-align:right;">{wr}</td>'
+                    f'</tr>'
+                )
+
+        html = (
+            f'<div style="background:#ffffff;border-radius:14px;overflow:hidden;'
+            f'box-shadow:0 4px 20px rgba(13,27,62,0.08);margin-bottom:1.1rem;border-left:5px solid {accent};">'
+            f'<div style="background:{badge_bg};padding:0.85rem 1.2rem;display:flex;align-items:center;justify-content:space-between;">'
+            f'<div>'
+            f'<div style="font-family:Fraunces,serif;font-size:1.1rem;font-weight:900;color:#fff;">{title}</div>'
+            f'<div style="font-size:0.75rem;color:rgba(255,255,255,0.80);margin-top:0.15rem;">Est. admit chance: {admit}</div>'
+            f'</div>'
+            f'<div style="background:rgba(255,255,255,0.18);border-radius:8px;padding:0.3rem 0.8rem;font-size:0.80rem;font-weight:700;color:#fff;">{len(data)} universities</div>'
+            f'</div>'
+            f'<table style="width:100%;border-collapse:collapse;">'
+            f'<thead><tr style="border-bottom:2px solid rgba(13,27,62,0.08);">'
+            f'<th style="padding:0.5rem 1rem;font-size:0.70rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:#7b8cb0;text-align:left;width:70px;">Rank</th>'
+            f'<th style="padding:0.5rem 1rem;font-size:0.70rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:#7b8cb0;text-align:left;">University</th>'
+            f'<th style="padding:0.5rem 1rem;font-size:0.70rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:#7b8cb0;text-align:left;width:180px;">Country</th>'
+            f'<th style="padding:0.5rem 1rem;font-size:0.70rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:#7b8cb0;text-align:right;width:100px;">World Rank</th>'
+            f'</tr></thead>'
+            f'<tbody>{body}</tbody>'
+            f'</table>'
+            f'</div>'
+        )
+        return html
 
     st.markdown(tier_card(dream_df,  "Dream Schools",  "< 30%",  "#0d1b3e", "linear-gradient(90deg,#0d1b3e,#1a2d6b)"), unsafe_allow_html=True)
     st.markdown(tier_card(target_df, "Target Schools", "30–65%", "#c8006e", "linear-gradient(90deg,#c8006e,#e0057c)"), unsafe_allow_html=True)
