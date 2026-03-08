@@ -21,7 +21,7 @@ def topnav(active: str = ""):
     links = ""
     for label, slug in pages:
         css_class = "active" if active == slug else ""
-        links += f'<a href="/{slug}" class="{css_class}">{label}</a>'
+        links += f'<a href="/{slug}" class="{css_class}" target="_self">{label}</a>'
 
     st.markdown(f"""
     <div class="gs-topnav">
