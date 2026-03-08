@@ -144,7 +144,8 @@ if len(rcols) >= 3:
             c  = cmap[row["institution"]]
             fig.add_trace(go.Scatterpolar(
                 r=nc, theta=rlbls_c, fill="toself",
-                fillcolor=c + "22", line=dict(color=c, width=2.5),
+                fillcolor=c, opacity=0.15,
+                line=dict(color=c, width=2.5),
                 marker=dict(size=5, color=c),
                 name=row["institution"].split(",")[0][:28]))
         fig.update_layout(
