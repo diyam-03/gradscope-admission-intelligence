@@ -193,13 +193,16 @@ if len(rcols) >= 3:
                   barmode="group", color_discrete_map=cmap,
                   text=melt["Score"].round(1))
     fig3.update_traces(textposition="outside", textfont_size=10)
-    fig3.update_layout(**T,
-                       xaxis=dict(showgrid=False),
-                       yaxis=dict(showgrid=True, gridcolor="rgba(13,27,62,0.06)"),
-                       legend=dict(orientation="h", y=-0.22, x=0.5,
-                                   xanchor="center", font_size=10),
-                       margin=dict(l=0,r=0,t=10,b=70), height=360,
-                       bargap=0.18, bargroupgap=0.06)
+    fig3.update_layout(
+        paper_bgcolor="rgba(255,255,255,0.80)",
+        plot_bgcolor="rgba(247,248,252,0.90)",
+        font_family="Outfit", font_color="#3d4f7a",
+        xaxis=dict(showgrid=False),
+        yaxis=dict(showgrid=True, gridcolor="rgba(13,27,62,0.06)"),
+        legend=dict(orientation="h", y=-0.22, x=0.5,
+                    xanchor="center", font_size=10),
+        margin=dict(l=0,r=0,t=10,b=70), height=360,
+        bargap=0.18, bargroupgap=0.06)
     st.plotly_chart(fig3, use_container_width=True)
 
 # ── Raw data table ─────────────────────────────────────────────────────────────
