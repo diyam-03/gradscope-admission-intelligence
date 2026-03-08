@@ -86,13 +86,36 @@ def topnav(active: str = ""):
     </nav>
     """, unsafe_allow_html=True)
 
-    # Logout button flush right, below nav
-    _, _, logout_col = st.columns([9, 1, 1])
-    with logout_col:
-        if st.button("Log out", key="nav_logout_btn"):
-            st.session_state.pop("user", None)
-            st.session_state.pop("user_email", None)
-            st.switch_page("app.py")
+    # Logout button — inside nav row as HTML, no wrapping
+    st.markdown("""
+    <style>
+    #nav-logout-wrap { display:flex; justify-content:flex-end; margin-top:-0.55rem; margin-bottom:0.6rem; }
+    #nav-logout-wrap .stButton > button {
+      white-space: nowrap !important;
+      font-size: 0.76rem !important;
+      font-family: 'Outfit', sans-serif !important;
+      font-weight: 600 !important;
+      color: #7b8cb0 !important;
+      background: transparent !important;
+      border: 1.5px solid rgba(13,27,62,0.14) !important;
+      border-radius: 8px !important;
+      padding: 0.28rem 0.85rem !important;
+      width: auto !important;
+      min-width: 0 !important;
+    }
+    #nav-logout-wrap .stButton > button:hover {
+      background: rgba(200,0,110,0.06) !important;
+      border-color: #c8006e !important;
+      color: #c8006e !important;
+    }
+    </style>
+    <div id="nav-logout-wrap">
+    """, unsafe_allow_html=True)
+    if st.button("Log out", key="nav_logout_btn"):
+        st.session_state.pop("user", None)
+        st.session_state.pop("user_email", None)
+        st.switch_page("app.py")
+    st.markdown("</div>", unsafe_allow_html=True)
 
 
 def page_header(eyebrow: str, title: str, subtitle: str = "", active: str = ""):
