@@ -384,3 +384,11 @@ p, li { font-family: 'Outfit', sans-serif !important;
     border-color: #c8006e !important;
     box-shadow: 0 0 0 3px rgba(200,0,110,0.10) !important;
 }
+
+/* Always show sidebar toggle arrow even when sidebar is collapsed */
+[data-testid="collapsedControl"] {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    color: var(--navy) !important;
+}
