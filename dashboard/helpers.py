@@ -9,61 +9,36 @@ def load_css():
 
 
 def topnav(active: str = ""):
-    pages = [
-        ("Home",                    "app"),
-        ("Profile Analyzer",        "pages/3_Profile_Analyzer"),
-        ("Explore Universities",    "pages/2_University_Explorer"),
-        ("Universities Recommended","pages/4_University_Recommendation"),
-        ("Compare Universities",    "pages/6_University_Comparison"),
-        ("Admission Assistant",     "pages/5_Admission_Assistant"),
-        ("Admission Analytics",     "pages/1_Admission_Analytics"),
-    ]
-
-    # Build nav as pure HTML — st.page_link truncates regardless of column width
-    base = ""  # relative paths work in Streamlit multipage
     nav_items = [
-        ("🎓 GradScope",              "app",                          True),
-        ("Profile Analyzer",          "pages/3_Profile_Analyzer",     False),
-        ("Explore Universities",      "pages/2_University_Explorer",  False),
-        ("Universities Recommended",  "pages/4_University_Recommendation", False),
-        ("Compare Universities",      "pages/6_University_Comparison",False),
-        ("Admission Assistant",       "pages/5_Admission_Assistant",  False),
-        ("Admission Analytics",       "pages/1_Admission_Analytics",  False),
+        ("GradScope",                "/",                         True),
+        ("Profile Analyzer",         "/Profile_Analyzer",         False),
+        ("Explore Universities",     "/University_Explorer",      False),
+        ("Universities Recommended", "/University_Recommendation",False),
+        ("Compare Universities",     "/University_Comparison",    False),
+        ("Admission Assistant",      "/Admission_Assistant",      False),
+        ("Admission Analytics",      "/Admission_Analytics",      False),
     ]
-
-    nav_html = """
-    <style>
-    .gs-nav {
-      display:flex;align-items:center;gap:0.15rem;
-      background:#0d1b3e;border-radius:12px;
-      padding:0.4rem 0.75rem;margin-bottom:1.25rem;
-      box-shadow:0 6px 24px rgba(13,27,62,0.18);
-      flex-wrap:nowrap;overflow-x:auto;
-    }
-    .gs-nav a {
-      font-family:'Outfit',sans-serif;font-size:0.78rem;font-weight:600;
-      color:rgba(255,255,255,0.65);
-      padding:0.4rem 0.7rem;border-radius:8px;
-      white-space:nowrap;text-decoration:none;
-      transition:background 0.18s,color 0.18s;
-      flex-shrink:0;
-    }
-    .gs-nav a:hover { background:rgba(255,255,255,0.10);color:#fff; }
-    .gs-nav a.gs-nav-brand {
-      font-family:'Fraunces',serif;font-weight:900;font-size:0.95rem;
-      color:#fff;margin-right:0.5rem;padding:0.4rem 0.85rem;
-      background:rgba(255,255,255,0.08);border-radius:8px;
-    }
-    .gs-nav a.gs-nav-brand:hover { background:rgba(255,255,255,0.15); }
-    </style>
-    <nav class="gs-nav">
-    """
+    links = ""
     for label, path, is_brand in nav_items:
         cls = "gs-nav-brand" if is_brand else ""
-        nav_html += f'<a href="{path}" class="{cls}" target="_self">{label}</a>'
-    nav_html += "</nav>"
-
-    st.markdown(nav_html, unsafe_allow_html=True)
+        links += f'<a href="{path}" class="{cls}" target="_self">{label}</a>'
+    st.markdown(f"""
+    <style>
+    .gs-nav{{display:flex;align-items:center;gap:0.2rem;background:#0d1b3e;
+      border-radius:12px;padding:0.45rem 1rem;margin-bottom:1.25rem;
+      box-shadow:0 6px 24px rgba(13,27,62,0.18);overflow-x:auto;}}
+    .gs-nav a{{font-family:'Outfit',sans-serif;font-size:0.80rem;font-weight:600;
+      color:rgba(255,255,255,0.62);padding:0.38rem 0.75rem;border-radius:8px;
+      white-space:nowrap;text-decoration:none;display:inline-block;
+      transition:background 0.18s,color 0.18s;}}
+    .gs-nav a:hover{{background:rgba(200,0,110,0.25);color:#fff;}}
+    .gs-nav a.gs-nav-brand{{font-family:'Fraunces',serif;font-weight:900;font-size:1rem;
+      color:#fff;margin-right:0.6rem;padding:0.38rem 1rem;
+      background:rgba(255,255,255,0.08);letter-spacing:-0.02em;}}
+    .gs-nav a.gs-nav-brand:hover{{background:rgba(200,0,110,0.35);color:#fff;}}
+    </style>
+    <nav class="gs-nav">{links}</nav>
+    """, unsafe_allow_html=True)
 
 
 def page_header(eyebrow: str, title: str, subtitle: str = "", active: str = ""):
