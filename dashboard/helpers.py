@@ -8,6 +8,13 @@ def load_css():
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 
+def require_auth():
+    """Call at top of every page. Redirects to home/login if not authenticated."""
+    if not st.session_state.get("user"):
+        st.switch_page("app.py")
+        st.stop()
+
+
 def topnav(active: str = ""):
     nav_items = [
         ("GradScope",                "/",                          True),
@@ -18,6 +25,10 @@ def topnav(active: str = ""):
         ("Admission Assistant",      "/Admission_Assistant",       False),
         ("Admission Analytics",      "/Admission_Analytics",       False),
     ]
+
+    user_email   = st.session_state.get("user_email", "")
+    user_initial = user_email[0].upper() if user_email else "U"
+
     links = ""
     for label, path, is_brand in nav_items:
         cls = "gs-nav-brand" if is_brand else ""
@@ -25,70 +36,63 @@ def topnav(active: str = ""):
 
     st.markdown(f"""
     <style>
-    /* Hide Streamlit's own page-link nav buttons */
-    [data-testid="stPageLink"] {{ display: none !important; }}
-    [data-testid="stSidebarNav"] {{ display: none !important; }}
-    [data-testid="stSidebar"] {{ display: none !important; }}
-    [data-testid="collapsedControl"] {{ display: none !important; }}
-
+    [data-testid="stPageLink"]      {{ display: none !important; }}
+    [data-testid="stSidebarNav"]    {{ display: none !important; }}
+    [data-testid="stSidebar"]       {{ display: none !important; }}
+    [data-testid="collapsedControl"]{{ display: none !important; }}
     .gs-nav {{
-      display: flex;
-      align-items: center;
-      gap: 0.15rem;
-      background: #0d1b3e;
-      border-radius: 12px;
-      padding: 0.5rem 1rem;
-      margin-bottom: 1.25rem;
-      box-shadow: 0 6px 24px rgba(13,27,62,0.18);
-      overflow-x: auto;
-      scrollbar-width: none;
+      display:flex;align-items:center;gap:0.15rem;
+      background:#0d1b3e;border-radius:12px;
+      padding:0.5rem 1rem;margin-bottom:0.5rem;
+      box-shadow:0 6px 24px rgba(13,27,62,0.18);
+      overflow-x:auto;scrollbar-width:none;
     }}
-    .gs-nav::-webkit-scrollbar {{ display: none; }}
+    .gs-nav::-webkit-scrollbar {{ display:none; }}
     .gs-nav a {{
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: rgba(255,255,255,0.60);
-      padding: 0.42rem 0.85rem;
-      border-radius: 8px;
-      white-space: nowrap;
-      text-decoration: none;
-      display: inline-block;
-      transition: background 0.18s ease, color 0.18s ease;
-      flex-shrink: 0;
+      font-family:'Outfit',sans-serif;font-size:0.82rem;font-weight:600;
+      color:rgba(255,255,255,0.60);padding:0.42rem 0.85rem;border-radius:8px;
+      white-space:nowrap;text-decoration:none;display:inline-block;
+      transition:background 0.18s,color 0.18s;flex-shrink:0;
     }}
-    .gs-nav a:hover {{
-      background: rgba(200,0,110,0.28);
-      color: #ffffff;
-    }}
+    .gs-nav a:hover {{ background:rgba(200,0,110,0.28);color:#fff; }}
     .gs-nav a.gs-nav-brand {{
-      font-family: 'Fraunces', serif;
-      font-weight: 900;
-      font-size: 1.05rem;
-      color: #ffffff;
-      padding: 0.42rem 1.1rem;
-      background: rgba(255,255,255,0.09);
-      border-radius: 9px;
-      letter-spacing: -0.02em;
-      margin-right: 0.75rem;
+      font-family:'Fraunces',serif;font-weight:900;font-size:1.05rem;
+      color:#fff;padding:0.42rem 1.1rem;background:rgba(255,255,255,0.09);
+      border-radius:9px;letter-spacing:-0.02em;margin-right:0.75rem;
     }}
-    .gs-nav a.gs-nav-brand:hover {{
-      background: rgba(200,0,110,0.35);
-      color: #fff;
+    .gs-nav a.gs-nav-brand:hover {{ background:rgba(200,0,110,0.35);color:#fff; }}
+    .gs-nav-spacer {{ flex:1; min-width:0.5rem; }}
+    .gs-nav-user {{
+      display:flex;align-items:center;gap:0.5rem;flex-shrink:0;margin-left:0.5rem;
     }}
-    /* Divider between brand and links */
-    .gs-nav-divider {{
-      width: 1px;
-      height: 18px;
-      background: rgba(255,255,255,0.15);
-      margin: 0 0.5rem;
-      flex-shrink: 0;
+    .gs-nav-avatar {{
+      width:28px;height:28px;border-radius:50%;
+      background:linear-gradient(135deg,#c8006e,#f5a623);
+      display:flex;align-items:center;justify-content:center;
+      font-size:0.72rem;font-weight:700;color:#fff;font-family:'Outfit',sans-serif;
+    }}
+    .gs-nav-email {{
+      font-family:'Outfit',sans-serif;font-size:0.74rem;
+      color:rgba(255,255,255,0.48);white-space:nowrap;
     }}
     </style>
     <nav class="gs-nav">
       {links}
+      <div class="gs-nav-spacer"></div>
+      <div class="gs-nav-user">
+        <div class="gs-nav-avatar">{user_initial}</div>
+        <div class="gs-nav-email">{user_email}</div>
+      </div>
     </nav>
     """, unsafe_allow_html=True)
+
+    # Logout button flush right, below nav
+    _, _, logout_col = st.columns([9, 1, 1])
+    with logout_col:
+        if st.button("Log out", key="nav_logout_btn"):
+            st.session_state.pop("user", None)
+            st.session_state.pop("user_email", None)
+            st.switch_page("app.py")
 
 
 def page_header(eyebrow: str, title: str, subtitle: str = "", active: str = ""):

@@ -1,5 +1,6 @@
 import streamlit as st
 from helpers import load_css, topnav
+from auth import show_auth_page, get_session
 
 st.set_page_config(
     page_title="GradScope — Admission Intelligence",
@@ -7,9 +8,15 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="collapsed",
 )
+
+# ── Auth gate — show login/signup if not logged in ─────────────────────────
+if not show_auth_page():
+    st.stop()
+
 load_css()
 topnav("app")
 
+# ── Animated home page styles ─────────────────────────────────────────────────
 st.markdown("""
 <style>
 @keyframes fadeUp {
@@ -249,7 +256,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-
+# ── Hero ──────────────────────────────────────────────────────────────────────
 st.markdown("""
 <div class="gs-home-hero">
   <div class="gs-brand">
@@ -277,7 +284,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-
+# ── Stats strip ───────────────────────────────────────────────────────────────
 stats = [
     ("1,422+", "Universities",     "from QS 2025 rankings",    "#c8006e", "0.1s"),
     ("55",     "Subject Rankings", "across all disciplines",    "#0d1b3e", "0.2s"),
@@ -296,7 +303,7 @@ st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown('<div class="gs-divider"></div>', unsafe_allow_html=True)
 
-
+# ── Features ──────────────────────────────────────────────────────────────────
 st.markdown("""
 <div class="gs-section-head">
   <div class="gs-section-label">What's Inside</div>
@@ -329,7 +336,7 @@ for col, (icon, title, desc, grad, bg, delay) in zip(all_cols, features):
         <div style="height:1rem;"></div>
         """, unsafe_allow_html=True)
 
-
+# ── CTA strip ─────────────────────────────────────────────────────────────────
 st.markdown("""
 <div class="gs-cta-strip">
   <div>
@@ -358,7 +365,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-
+# ── Footer ─────────────────────────────────────────────────────────────────────
 st.markdown("""
 <div class="gs-footer">
   <span>GradScope · Built with Streamlit, Supabase, Scikit-learn, Plotly</span>
