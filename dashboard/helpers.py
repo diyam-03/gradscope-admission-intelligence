@@ -10,34 +10,84 @@ def load_css():
 
 def topnav(active: str = ""):
     nav_items = [
-        ("GradScope",                "/",                         True),
-        ("Profile Analyzer",         "/Profile_Analyzer",         False),
-        ("Explore Universities",     "/University_Explorer",      False),
-        ("Universities Recommended", "/University_Recommendation",False),
-        ("Compare Universities",     "/University_Comparison",    False),
-        ("Admission Assistant",      "/Admission_Assistant",      False),
-        ("Admission Analytics",      "/Admission_Analytics",      False),
+        ("GradScope",                "/",                          True),
+        ("Profile Analyzer",         "/Profile_Analyzer",          False),
+        ("Explore Universities",     "/University_Explorer",       False),
+        ("Universities Recommended", "/University_Recommendation", False),
+        ("Compare Universities",     "/University_Comparison",     False),
+        ("Admission Assistant",      "/Admission_Assistant",       False),
+        ("Admission Analytics",      "/Admission_Analytics",       False),
     ]
     links = ""
     for label, path, is_brand in nav_items:
         cls = "gs-nav-brand" if is_brand else ""
         links += f'<a href="{path}" class="{cls}" target="_self">{label}</a>'
+
     st.markdown(f"""
     <style>
-    .gs-nav{{display:flex;align-items:center;gap:0.2rem;background:#0d1b3e;
-      border-radius:12px;padding:0.45rem 1rem;margin-bottom:1.25rem;
-      box-shadow:0 6px 24px rgba(13,27,62,0.18);overflow-x:auto;}}
-    .gs-nav a{{font-family:'Outfit',sans-serif;font-size:0.80rem;font-weight:600;
-      color:rgba(255,255,255,0.62);padding:0.38rem 0.75rem;border-radius:8px;
-      white-space:nowrap;text-decoration:none;display:inline-block;
-      transition:background 0.18s,color 0.18s;}}
-    .gs-nav a:hover{{background:rgba(200,0,110,0.25);color:#fff;}}
-    .gs-nav a.gs-nav-brand{{font-family:'Fraunces',serif;font-weight:900;font-size:1rem;
-      color:#fff;margin-right:0.6rem;padding:0.38rem 1rem;
-      background:rgba(255,255,255,0.08);letter-spacing:-0.02em;}}
-    .gs-nav a.gs-nav-brand:hover{{background:rgba(200,0,110,0.35);color:#fff;}}
+    /* Hide Streamlit's own page-link nav buttons */
+    [data-testid="stPageLink"] {{ display: none !important; }}
+    [data-testid="stSidebarNav"] {{ display: none !important; }}
+    [data-testid="stSidebar"] {{ display: none !important; }}
+    [data-testid="collapsedControl"] {{ display: none !important; }}
+
+    .gs-nav {{
+      display: flex;
+      align-items: center;
+      gap: 0.15rem;
+      background: #0d1b3e;
+      border-radius: 12px;
+      padding: 0.5rem 1rem;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 6px 24px rgba(13,27,62,0.18);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }}
+    .gs-nav::-webkit-scrollbar {{ display: none; }}
+    .gs-nav a {{
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.60);
+      padding: 0.42rem 0.85rem;
+      border-radius: 8px;
+      white-space: nowrap;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.18s ease, color 0.18s ease;
+      flex-shrink: 0;
+    }}
+    .gs-nav a:hover {{
+      background: rgba(200,0,110,0.28);
+      color: #ffffff;
+    }}
+    .gs-nav a.gs-nav-brand {{
+      font-family: 'Fraunces', serif;
+      font-weight: 900;
+      font-size: 1.05rem;
+      color: #ffffff;
+      padding: 0.42rem 1.1rem;
+      background: rgba(255,255,255,0.09);
+      border-radius: 9px;
+      letter-spacing: -0.02em;
+      margin-right: 0.75rem;
+    }}
+    .gs-nav a.gs-nav-brand:hover {{
+      background: rgba(200,0,110,0.35);
+      color: #fff;
+    }}
+    /* Divider between brand and links */
+    .gs-nav-divider {{
+      width: 1px;
+      height: 18px;
+      background: rgba(255,255,255,0.15);
+      margin: 0 0.5rem;
+      flex-shrink: 0;
+    }}
     </style>
-    <nav class="gs-nav">{links}</nav>
+    <nav class="gs-nav">
+      {links}
+    </nav>
     """, unsafe_allow_html=True)
 
 
