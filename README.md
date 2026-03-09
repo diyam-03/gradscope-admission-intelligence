@@ -1,4 +1,4 @@
-# 🎓 GradScope — Admission Intelligence
+# 🎓 GradScope - Admission Intelligence
 
 A graduate admissions intelligence platform that helps students make smarter decisions about where to apply — powered by real QS 2025 data, machine learning, and a clean modern interface.
 
