@@ -23,13 +23,13 @@ SUBJECTS = sorted(df_sub["subject"].unique().tolist())
 T = dict(paper_bgcolor="rgba(255,255,255,0.80)", plot_bgcolor="rgba(247,248,252,0.90)",
          font_family="Outfit", font_color="#3d4f7a", margin=dict(l=0,r=0,t=10,b=40))
 
-# ── Step 1 — Field ─────────────────────────────────────────────────────────────
+
 st.markdown('<div class="gs-label">Step 1 — Your Field of Study</div>', unsafe_allow_html=True)
 
 field = st.selectbox("What do you want to study?", options=SUBJECTS,
                      index=SUBJECTS.index("Computer Science") if "Computer Science" in SUBJECTS else 0)
 
-# Teaser — top 5 for selected field
+
 top5 = df_sub[df_sub["subject"] == field].sort_values("subject_rank").head(5)
 st.markdown(f"""
 <div style="background:rgba(13,27,62,0.05);border:1px solid rgba(13,27,62,0.10);
@@ -43,7 +43,7 @@ st.markdown(f"""
   </span>
 </div>""", unsafe_allow_html=True)
 
-# ── Step 2 — Profile ───────────────────────────────────────────────────────────
+
 st.markdown('<div class="gs-label">Step 2 — Your Academic Profile</div>', unsafe_allow_html=True)
 
 c1, c2, c3, c4 = st.columns(4)
@@ -70,7 +70,6 @@ if not all_filled:
     st.markdown("""<div style="font-size:0.82rem;color:#7b8cb0;margin-top:0.4rem;">
         Fill in all fields above to get recommendations.</div>""", unsafe_allow_html=True)
 
-# ── Results ────────────────────────────────────────────────────────────────────
 if recommend or st.session_state.get("rec_done"):
     if recommend:
         st.session_state["rec_done"] = True
@@ -91,10 +90,9 @@ if recommend or st.session_state.get("rec_done"):
     if res_v: score = min(1.0, score + 0.05)
     s100 = round(score * 100, 1)
 
-    # Get subject-ranked universities for selected field
     ranked = df_sub[df_sub["subject"] == field_v].sort_values("subject_rank").copy()
 
-    # Dynamic cutoffs based on profile score
+ 
     if s100 >= 88:
         dream_max, target_max = 5,  12
     elif s100 >= 80:
@@ -112,7 +110,7 @@ if recommend or st.session_state.get("rec_done"):
 
     st.markdown('<div class="gs-divider"></div>', unsafe_allow_html=True)
 
-    # KPI strip
+
     kpis = [
         ("Profile Score",  f"{s100}",          "out of 100",                             "linear-gradient(90deg,#c8006e,#f5a623)"),
         ("Subject",        field_v.split()[0], "selected field",                          "linear-gradient(90deg,#0d1b3e,#4a90d9)"),
@@ -132,7 +130,7 @@ if recommend or st.session_state.get("rec_done"):
 
     st.markdown('<div class="gs-divider"></div>', unsafe_allow_html=True)
 
-    # Profile context note
+
     if s100 >= 85:
         note = "Your profile is very strong. You are competitive at top-ranked programs in this field."
         nc = "#10b981"
@@ -195,7 +193,7 @@ if recommend or st.session_state.get("rec_done"):
 
     st.markdown('<div class="gs-divider"></div>', unsafe_allow_html=True)
 
-    # Scatter — subject rank vs world rank
+   
     plot_data = ranked.dropna(subset=["world_rank", "overall_score"]).copy()
     if len(plot_data) >= 3:
         plot_data["Tier"] = "Safe"
@@ -222,7 +220,7 @@ if recommend or st.session_state.get("rec_done"):
             Source: QS World University Rankings by Subject 2025.</div>""",
             unsafe_allow_html=True)
 
-    # Download
+   
     st.markdown('<div style="height:0.5rem"></div>', unsafe_allow_html=True)
     all_recs = pd.concat([
         dream_df.assign(Tier="Dream"),
