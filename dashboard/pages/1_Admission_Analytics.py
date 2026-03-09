@@ -32,7 +32,7 @@ df = load()
 df["Admit%"] = (df["Admit"] * 100).round(1) if df["Admit"].max() <= 1 else df["Admit"].round(1)
 df["ResearchLabel"] = df["Research"].map({0: "No Research", 1: "Has Research"})
 
-# ── Computed insight values ────────────────────────────────────────────────────
+
 avg_admit       = df["Admit%"].mean()
 gre_high_admit  = df[df["GRE"] >= 325]["Admit%"].mean()
 gre_low_admit   = df[df["GRE"] < 310]["Admit%"].mean()
@@ -47,7 +47,7 @@ corr_research   = df["Research"].corr(df["Admit%"])
 top_rating_avg  = df[df["UniRating"] == 5]["Admit%"].mean()
 bot_rating_avg  = df[df["UniRating"] == 1]["Admit%"].mean()
 
-# ── Top KPIs ───────────────────────────────────────────────────────────────────
+
 k1, k2, k3, k4, k5 = st.columns(5)
 for col, label, value, sub, bar in [
     (k1, "Total Applicants",   f"{len(df):,}",                   "in dataset",          "linear-gradient(90deg,#0d1b3e,#4a90d9)"),
@@ -67,7 +67,7 @@ for col, label, value, sub, bar in [
 
 st.markdown('<div class="gs-divider"></div>', unsafe_allow_html=True)
 
-# ── Key Insights ───────────────────────────────────────────────────────────────
+
 st.markdown('<div class="gs-label">Key Insights from the Data</div>', unsafe_allow_html=True)
 
 insights = [
@@ -108,7 +108,6 @@ insights = [
     },
 ]
 
-# Render 5 insight cards — first row 3, second row 2
 row1 = st.columns(3)
 row2 = st.columns(2)
 all_cols = row1 + row2
@@ -140,7 +139,7 @@ for col, ins in zip(all_cols, insights):
 
 st.markdown('<div class="gs-divider"></div>', unsafe_allow_html=True)
 
-# ── One focused chart: factor importance bar ──────────────────────────────────
+
 st.markdown('<div class="gs-label">How Much Does Each Factor Influence Admission?</div>', unsafe_allow_html=True)
 
 factors = pd.DataFrame({
