@@ -59,7 +59,6 @@ LOR_OPTIONS = {
     5.0: "From a senior professor who can compare me to top students they have taught",
 }
 
-# ── Step 1 ────────────────────────────────────────────────────────────────────
 st.markdown('<div class="gs-label">Step 1 — Enter Your Academic Scores</div>',
             unsafe_allow_html=True)
 
@@ -90,7 +89,7 @@ with r2c2:
                             options=[None, "Yes", "No"],
                             format_func=lambda x: "Select..." if x is None else x)
 
-# ── Step 2 ────────────────────────────────────────────────────────────────────
+
 st.markdown('<div style="height:0.5rem"></div>', unsafe_allow_html=True)
 st.markdown('<div class="gs-label">Step 2 — Self-Assess Your Application Materials</div>',
             unsafe_allow_html=True)
@@ -129,7 +128,7 @@ if not all_filled:
         Fill in all fields above to enable the analyzer.
     </div>""", unsafe_allow_html=True)
 
-# ── Results ───────────────────────────────────────────────────────────────────
+
 if analyze or st.session_state.get("analyzed"):
     if analyze:
         st.session_state["analyzed"] = True
@@ -225,7 +224,7 @@ if analyze or st.session_state.get("analyzed"):
 
     st.markdown('<div class="gs-divider"></div>', unsafe_allow_html=True)
 
-    # Similar applicants
+
     st.markdown('<div class="gs-label">Similar Applicants from Our Dataset</div>',
                 unsafe_allow_html=True)
     similar = df_adm[
@@ -281,7 +280,7 @@ if analyze or st.session_state.get("analyzed"):
 
     st.markdown('<div class="gs-divider"></div>', unsafe_allow_html=True)
 
-    # Action plan
+   
     st.markdown('<div class="gs-label">Your Action Plan</div>', unsafe_allow_html=True)
     actions = []
     if gre_v < 315:
