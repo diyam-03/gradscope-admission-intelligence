@@ -23,7 +23,7 @@ def load():
 
 df = load()
 
-# Column mapping for new universities.csv
+
 SCORE_MAP = {
     "overall_score":   "Overall",
     "academic_score":  "Academic",
@@ -35,7 +35,7 @@ PALETTE  = ["#0d1b3e","#c8006e","#10b981","#f5a623","#4a90d9"]
 T = dict(paper_bgcolor="rgba(255,255,255,0.80)", plot_bgcolor="rgba(247,248,252,0.90)",
          font_family="Outfit", font_color="#3d4f7a", margin=dict(l=0,r=0,t=20,b=0))
 
-# ── Search ─────────────────────────────────────────────────────────────────────
+
 st.markdown('<div class="gs-label">Choose Universities to Compare (up to 5)</div>', unsafe_allow_html=True)
 defaults = [n for n in ["Harvard University","Massachusetts Institute of Technology (MIT)",
                          "Stanford University","University of Oxford"]
@@ -61,7 +61,7 @@ rlbls = [SCORE_MAP[k] for k in rcols]
 
 st.markdown('<div class="gs-divider"></div>', unsafe_allow_html=True)
 
-# ── Summary Cards — full width horizontal ────────────────────────────────────
+
 cards_html = '<div style="display:grid;grid-template-columns:repeat(' + str(len(comp)) + ',1fr);gap:1rem;margin-bottom:1.5rem;">'
 
 for _, row in comp.iterrows():
@@ -128,7 +128,6 @@ st.markdown(cards_html, unsafe_allow_html=True)
 
 st.markdown('<div class="gs-divider"></div>', unsafe_allow_html=True)
 
-# ── Charts ────────────────────────────────────────────────────────────────────
 if len(rcols) >= 3:
     cl, cr = st.columns([3, 2])
 
@@ -205,7 +204,7 @@ if len(rcols) >= 3:
         bargap=0.18, bargroupgap=0.06)
     st.plotly_chart(fig3, use_container_width=True)
 
-# ── Raw data table ─────────────────────────────────────────────────────────────
+
 st.markdown('<div class="gs-divider"></div>', unsafe_allow_html=True)
 st.markdown('<div class="gs-label">Full Data</div>', unsafe_allow_html=True)
 show_cols = {
