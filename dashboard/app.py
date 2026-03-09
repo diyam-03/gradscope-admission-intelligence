@@ -281,7 +281,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# ── Stats strip ───────────────────────────────────────────────────────────────
+
 stats = [
     ("1,422+", "Universities",     "from QS 2025 rankings",    "#c8006e", "0.1s"),
     ("55",     "Subject Rankings", "across all disciplines",    "#0d1b3e", "0.2s"),
