@@ -64,13 +64,11 @@ KB = [
      "tips": ["PhDs are almost always fully funded in the US", "You can often transfer from MS to PhD within the same program", "Industry jobs often prefer MS; academia and research labs prefer PhD", "PhD applications require a much stronger research background"]},
 ]
 
-# ── Initialise chat history ────────────────────────────────────────────────────
 if "chat_history" not in st.session_state:
     st.session_state["chat_history"] = [
         {"role": "assistant", "content": "Hi! I am your GradScope admission advisor. Ask me anything about GRE scores, SoPs, research experience, funding, visas, or choosing universities. You can also click a topic below to get started."}
     ]
 
-# ── Topic quick-start buttons ──────────────────────────────────────────────────
 st.markdown('<div class="gs-label">Quick Topics</div>', unsafe_allow_html=True)
 
 topic_cols = st.columns(6)
@@ -91,18 +89,17 @@ for col, label, key in zip(topic_cols, topics_short, topic_keys):
 
 st.markdown('<div style="height:0.5rem"></div>', unsafe_allow_html=True)
 
-# ── Chat display ───────────────────────────────────────────────────────────────
 for msg in st.session_state["chat_history"]:
     with st.chat_message(msg["role"], avatar="🎓" if msg["role"] == "assistant" else "🧑‍💻"):
         st.markdown(msg["content"])
 
-# ── Chat input ─────────────────────────────────────────────────────────────────
+
 user_input = st.chat_input("Ask me anything about grad school applications...")
 
 if user_input:
     st.session_state["chat_history"].append({"role": "user", "content": user_input})
 
-    # Match against KB
+    
     q_lower = user_input.lower()
     matched = None
     for item in KB:
@@ -123,7 +120,7 @@ if user_input:
     st.session_state["chat_history"].append({"role": "assistant", "content": reply})
     st.rerun()
 
-# ── Clear chat ─────────────────────────────────────────────────────────────────
+
 if len(st.session_state["chat_history"]) > 1:
     if st.button("Clear conversation", key="clear_chat"):
         st.session_state["chat_history"] = [
